@@ -1,5 +1,6 @@
 package driver;
 
+import helper.Ihelper.IAppPackage;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
@@ -25,8 +26,8 @@ public class DriverFactory implements MobileCapabilityTypeEx {
             desiredCapabilities.setCapability(PLATFORM_NAME, "Android");
             desiredCapabilities.setCapability(AUTOMATION_NAME, "uiautomator2");
             desiredCapabilities.setCapability(UDID, "emulator-5554");
-            desiredCapabilities.setCapability(APP_PACKAGE, "com.wdiodemoapp");
-            desiredCapabilities.setCapability(APP_ACTIVITY, "com.wdiodemoapp.MainActivity");
+            desiredCapabilities.setCapability(APP_PACKAGE, IAppPackage.APP_PACKAGE_NATIVE_APP);
+            desiredCapabilities.setCapability(APP_ACTIVITY, IAppPackage.APP_ACTIVITY_NATIVE_APP);
 
             //Init appium session
             URL appiumServer = new URL("http://localhost:4723/wd/hub");

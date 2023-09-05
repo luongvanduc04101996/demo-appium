@@ -18,6 +18,8 @@ public class LaunchApp {
             desiredCapabilities.setCapability("platformName", "Android");
             desiredCapabilities.setCapability("automationName", "uiautomator2");
             desiredCapabilities.setCapability("udid", "emulator-5554");
+
+            //Get by cmd: adb devices -> adb shell -> dumpsys window displays | grep -E 'mCurrentFocus'
             desiredCapabilities.setCapability("appPackage", "com.wdiodemoapp");
             desiredCapabilities.setCapability("appActivity", "com.wdiodemoapp.MainActivity");
 
