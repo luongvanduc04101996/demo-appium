@@ -5,13 +5,13 @@ import driver.Platforms;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.components.LoginFormComponent;
-import models.pages.LoginScreen;
+import models.pages.HomeScreen;
 
 public class TestLoginScreenPOM_1 {
     public static void main(String[] args) {
         AppiumDriver<MobileElement> appiumDriver = DriverFactory.getDriver(Platforms.android);
         try {
-            LoginScreen loginScreen = new LoginScreen(appiumDriver);
+            HomeScreen loginScreen = new HomeScreen(appiumDriver);
             loginScreen.bottomNavComponent().clickOnLoginIcon();
 
             LoginFormComponent loginFormComponent = new LoginFormComponent(appiumDriver);

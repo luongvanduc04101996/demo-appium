@@ -13,3 +13,8 @@ buildNumber.properties
 
 # Screenshot folder
 screenshots
+
+# Allure
+allure-results
+allure-report
+

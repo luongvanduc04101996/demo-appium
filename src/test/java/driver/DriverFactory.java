@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class DriverFactory implements MobileCapabilityTypeEx {
-    public static AppiumDriver<MobileElement> getDriver (Platforms platform) {
+    private AppiumDriver<MobileElement> appiumDriver;
+
+    public static AppiumDriver<MobileElement> getDriver(Platforms platform) {
 
         if (platform == null) {
             throw new IllegalArgumentException("Platform can not null, please provide one of these: " + Arrays.toString(Platforms.values()));
@@ -25,7 +27,7 @@ public class DriverFactory implements MobileCapabilityTypeEx {
             DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
             desiredCapabilities.setCapability(PLATFORM_NAME, "Android");
             desiredCapabilities.setCapability(AUTOMATION_NAME, "uiautomator2");
-            desiredCapabilities.setCapability(UDID, "emulator-5554");
+            desiredCapabilities.setCapability(UDID, "emulator-5556");
             desiredCapabilities.setCapability(APP_PACKAGE, IAppPackage.APP_PACKAGE_NATIVE_APP);
             desiredCapabilities.setCapability(APP_ACTIVITY, IAppPackage.APP_ACTIVITY_NATIVE_APP);
 
@@ -53,4 +55,50 @@ public class DriverFactory implements MobileCapabilityTypeEx {
         return appiumDriver;
     }
 
+    public AppiumDriver<MobileElement> getDriver(Platforms platform, String udid, String systemPort) {
+        if (appiumDriver == null) {
+            if (platform == null) {
+                throw new IllegalArgumentException("Platform can not null, please provide one of these: " + Arrays.toString(Platforms.values()));
+            }
+            Exception exception = null;
+
+            try {//Desired Capabilities
+                DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+                desiredCapabilities.setCapability(PLATFORM_NAME, "Android");
+                desiredCapabilities.setCapability(AUTOMATION_NAME, "uiautomator2");
+                desiredCapabilities.setCapability(UDID, udid);
+                desiredCapabilities.setCapability(APP_PACKAGE, IAppPackage.APP_PACKAGE_NATIVE_APP);
+                desiredCapabilities.setCapability(APP_ACTIVITY, IAppPackage.APP_ACTIVITY_NATIVE_APP);
+                desiredCapabilities.setCapability(SYSTEM_PORT, Integer.parseInt(systemPort));
+
+                //Init appium session
+                URL appiumServer = new URL("http://localhost:4723/wd/hub");
+
+                switch (platform) {
+                    case android:
+                        appiumDriver = new AndroidDriver<MobileElement>(appiumServer, desiredCapabilities);
+                        break;
+                    case ios:
+                        appiumDriver = new IOSDriver<MobileElement>(appiumServer, desiredCapabilities);
+                        break;
+                }
+
+            } catch (Exception e) {
+                exception = e;
+            }
+
+            if (appiumDriver == null) {
+                throw new RuntimeException(exception.getMessage());
+            }
+            appiumDriver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
+        }
+        return appiumDriver;
+    }
+
+    public void quitAppiumDriver() {
+        if (appiumDriver != null) {
+            appiumDriver.quit();
+            appiumDriver = null;
+        }
+    }
 }
